@@ -1,4 +1,5 @@
 import { Platform } from "react-native";
+import { enableScreens } from "react-native-screens";
 import { createAppContainer } from "react-navigation";
 import { createStackNavigator } from "react-navigation-stack";
 import Colors from "./constants/Colors";
@@ -7,6 +8,8 @@ import CategoryMealsScreen from "./screens/CategoryMealsScreen";
 import FavoritesScreen from "./screens/FavoritesScreen";
 import FiltersScreen from "./screens/FiltersScreen";
 import MealDetailsScreen from "./screens/MealDetailsScreen";
+
+enableScreens();
 
 const navigator = createStackNavigator(
   {
