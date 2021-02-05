@@ -1,28 +1,46 @@
 import React from "react";
-import { FlatList, StyleSheet, Text, View } from "react-native";
+import {
+  FlatList,
+  Platform,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View
+} from "react-native";
 import { Button } from "react-native-elements";
 import { NavigationStackScreenComponent } from "react-navigation-stack";
+import Colors from "../constants/Colors";
 import { CATEGORIES } from "../data/dummy-data";
 
 const CategoriesScreen: NavigationStackScreenComponent = ({ navigation }) => {
   return (
     <View>
-      <Button
-        title="Category Meals"
-        onPress={() => navigation.navigate("CategoryMeals")}
-      />
+      <Button title="Category Meals" />
       <FlatList
         data={CATEGORIES}
         keyExtractor={item => item.id}
         numColumns={2}
         renderItem={({ item }) => (
-          <View style={styles.gridItem}>
-            <Text>{item.title}</Text>
-          </View>
+          <TouchableOpacity
+            onPress={() => navigation.navigate("CategoryMeals")}
+            style={styles.gridItem}
+          >
+            <View>
+              <Text>{item.title}</Text>
+            </View>
+          </TouchableOpacity>
         )}
       />
     </View>
   );
+};
+
+CategoriesScreen.navigationOptions = {
+  headerTitle: "Meal Categories",
+  headerStyle: {
+    ...(Platform.OS === "android" && { backgroundColor: Colors.primaryColor })
+  },
+  headerTintColor: Platform.OS === "android" ? "white" : Colors.primaryColor
 };
 
 export default CategoriesScreen;
