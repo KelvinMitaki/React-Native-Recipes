@@ -1,12 +1,16 @@
 import React from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { NavigationStackScreenComponent } from "react-navigation-stack";
+import MealList from "../components/MealList";
+import { MEALS } from "../data/dummy-data";
 
 const FavoritesScreen: NavigationStackScreenComponent = () => {
   return (
-    <View>
-      <Text>FavoritesScreen FavoritesScreen</Text>
-    </View>
+    <MealList
+      data={MEALS.filter(
+        m => m.id === "m1" || m.id === "m2" || m.id === "m3" || m.id === "m4"
+      )}
+    />
   );
 };
 
