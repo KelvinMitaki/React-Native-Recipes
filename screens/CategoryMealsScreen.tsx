@@ -1,20 +1,29 @@
 import React from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { FlatList, StyleSheet, Text, View } from "react-native";
 import { Button } from "react-native-elements";
 import { NavigationStackScreenComponent } from "react-navigation-stack";
-import { CATEGORIES } from "../data/dummy-data";
+import { CATEGORIES, MEALS } from "../data/dummy-data";
 
 const CategoryMealsScreen: NavigationStackScreenComponent<{
   id?: string;
 }> = ({ navigation }) => {
-  const cat = CATEGORIES.find(cat => cat.id === navigation.getParam("id"));
+  const catId = navigation.getParam("id");
+  const meals = MEALS.filter(meal => meal.categoryIds.indexOf(catId as string));
   return (
     <View>
       <Button
         title="Meal Details"
         onPress={() => navigation.navigate("MealDetails")}
       />
-      <Text>{cat?.title}</Text>
+      <FlatList
+        data={meals}
+        keyExtractor={m => m.id}
+        renderItem={({ item }) => (
+          <View>
+            <Text>{item.title}</Text>
+          </View>
+        )}
+      />
     </View>
   );
 };
