@@ -1,7 +1,14 @@
 import React from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { Platform, StyleSheet } from "react-native";
+import { Ionicons } from "@expo/vector-icons";
+import {
+  HeaderButton,
+  HeaderButtons,
+  Item
+} from "react-navigation-header-buttons";
 import { NavigationStackScreenComponent } from "react-navigation-stack";
 import MealList from "../components/MealList";
+import Colors from "../constants/Colors";
 import { MEALS } from "../data/dummy-data";
 
 const FavoritesScreen: NavigationStackScreenComponent = () => {
@@ -15,7 +22,25 @@ const FavoritesScreen: NavigationStackScreenComponent = () => {
 };
 
 FavoritesScreen.navigationOptions = {
-  headerTitle: "Your Favorites"
+  headerTitle: "Your Favorites",
+  headerLeft: () => (
+    <HeaderButtons
+      HeaderButtonComponent={props => (
+        <HeaderButton
+          {...props}
+          IconComponent={Ionicons}
+          iconSize={23}
+          color={Platform.OS === "android" ? "white" : Colors.primaryColor}
+        />
+      )}
+    >
+      <Item
+        title="Drawer"
+        iconName="ios-menu"
+        onPress={() => console.log("drawer")}
+      />
+    </HeaderButtons>
+  )
 };
 
 export default FavoritesScreen;

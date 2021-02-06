@@ -3,9 +3,11 @@ import { LogBox, Platform } from "react-native";
 import { enableScreens } from "react-native-screens";
 import {
   createAppContainer,
+  CreateNavigatorConfig,
   NavigationParams,
   NavigationRoute,
-  NavigationRouteConfigMap
+  NavigationRouteConfigMap,
+  NavigationStackRouterConfig
 } from "react-navigation";
 import { createStackNavigator } from "react-navigation-stack";
 import {
@@ -14,6 +16,7 @@ import {
   NavigationTabProp
 } from "react-navigation-tabs";
 import { Ionicons } from "@expo/vector-icons";
+import { createDrawerNavigator } from "react-navigation-drawer";
 import { createMaterialBottomTabNavigator } from "react-navigation-material-bottom-tabs";
 import Colors from "./constants/Colors";
 import CategoriesScreen from "./screens/CategoriesScreen";
@@ -21,30 +24,42 @@ import CategoryMealsScreen from "./screens/CategoryMealsScreen";
 import FavoritesScreen from "./screens/FavoritesScreen";
 import FiltersScreen from "./screens/FiltersScreen";
 import MealDetailsScreen from "./screens/MealDetailsScreen";
+import {
+  StackNavigationConfig,
+  StackNavigationOptions,
+  StackNavigationProp
+} from "react-navigation-stack/lib/typescript/src/vendor/types";
 
 enableScreens();
 
 LogBox.ignoreLogs([
-  "It appears that you are using old version of react-navigation library. Please update @react-navigation/bottom-tabs, @react-navigation/stack and @react-navigation/drawer to version 5.10.0 or above to take full advantage of new functionality added to react-native-screens"
+  "It appears that you are using old version of react-navigation library. Please update @react-navigation/bottom-tabs, @react-navigation/stack and @react-navigation/drawer to version 5.10.0 or above to take full advantage of new functionality added to react-native-screens",
+  "Your project is accessing the following APIs from a deprecated global rather than a module import: Constants (expo-constants)."
 ]);
+
+const defaultNavOpts: CreateNavigatorConfig<
+  StackNavigationConfig,
+  NavigationStackRouterConfig,
+  StackNavigationOptions,
+  StackNavigationProp
+> = {
+  defaultNavigationOptions: {
+    headerStyle: {
+      ...(Platform.OS === "android" && {
+        backgroundColor: Colors.primaryColor
+      })
+    },
+    headerTintColor: Platform.OS === "android" ? "white" : Colors.primaryColor
+  }
+};
 
 const mealsStackNavigator = createStackNavigator(
   {
     Categories: CategoriesScreen,
     CategoryMeals: CategoryMealsScreen,
-    Filters: FiltersScreen,
     MealDetails: MealDetailsScreen
   },
-  {
-    defaultNavigationOptions: {
-      headerStyle: {
-        ...(Platform.OS === "android" && {
-          backgroundColor: Colors.primaryColor
-        })
-      },
-      headerTintColor: Platform.OS === "android" ? "white" : Colors.primaryColor
-    }
-  }
+  defaultNavOpts
 );
 
 const favoritesStackNavigator = createStackNavigator(
@@ -52,16 +67,7 @@ const favoritesStackNavigator = createStackNavigator(
     Favorites: FavoritesScreen,
     MealDetails: MealDetailsScreen
   },
-  {
-    defaultNavigationOptions: {
-      headerStyle: {
-        ...(Platform.OS === "android" && {
-          backgroundColor: Colors.primaryColor
-        })
-      },
-      headerTintColor: Platform.OS === "android" ? "white" : Colors.primaryColor
-    }
-  }
+  defaultNavOpts
 );
 
 const tabScreenConfig: NavigationRouteConfigMap<
@@ -102,4 +108,16 @@ const tabNavigator =
         }
       });
 
-export default createAppContainer(tabNavigator);
+const filtersNavigator = createStackNavigator(
+  {
+    Filters: FiltersScreen
+  },
+  defaultNavOpts
+);
+
+const drawerNavigator = createDrawerNavigator({
+  MealsTab: tabNavigator,
+  Filters: filtersNavigator
+});
+
+export default createAppContainer(drawerNavigator);

@@ -1,13 +1,21 @@
 import React from "react";
 import {
   FlatList,
+  Platform,
   StyleSheet,
   Text,
   TouchableOpacity,
   View
 } from "react-native";
+import {
+  HeaderButton,
+  HeaderButtons,
+  Item
+} from "react-navigation-header-buttons";
 import { NavigationStackScreenComponent } from "react-navigation-stack";
+import { Ionicons } from "@expo/vector-icons";
 import { CATEGORIES } from "../data/dummy-data";
+import Colors from "../constants/Colors";
 
 const CategoriesScreen: NavigationStackScreenComponent = ({ navigation }) => {
   return (
@@ -34,7 +42,25 @@ const CategoriesScreen: NavigationStackScreenComponent = ({ navigation }) => {
 };
 
 CategoriesScreen.navigationOptions = {
-  headerTitle: "Meal Categories"
+  headerTitle: "Meal Categories",
+  headerLeft: () => (
+    <HeaderButtons
+      HeaderButtonComponent={props => (
+        <HeaderButton
+          {...props}
+          IconComponent={Ionicons}
+          iconSize={23}
+          color={Platform.OS === "android" ? "white" : Colors.primaryColor}
+        />
+      )}
+    >
+      <Item
+        title="Drawer"
+        iconName="ios-menu"
+        onPress={() => console.log("drawer")}
+      />
+    </HeaderButtons>
+  )
 };
 
 export default CategoriesScreen;
