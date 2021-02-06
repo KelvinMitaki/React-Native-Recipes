@@ -10,6 +10,12 @@ import { NavigationStackScreenComponent } from "react-navigation-stack";
 import MealList from "../components/MealList";
 import Colors from "../constants/Colors";
 import { MEALS } from "../data/dummy-data";
+import { NavigationDrawerProp } from "react-navigation-drawer";
+import {
+  NavigationParams,
+  NavigationRoute,
+  NavigationSetParamsActionPayload
+} from "react-navigation";
 
 const FavoritesScreen: NavigationStackScreenComponent = () => {
   return (
@@ -21,7 +27,7 @@ const FavoritesScreen: NavigationStackScreenComponent = () => {
   );
 };
 
-FavoritesScreen.navigationOptions = {
+FavoritesScreen.navigationOptions = ({ navigation }) => ({
   headerTitle: "Your Favorites",
   headerLeft: () => (
     <HeaderButtons
@@ -37,11 +43,16 @@ FavoritesScreen.navigationOptions = {
       <Item
         title="Drawer"
         iconName="ios-menu"
-        onPress={() => console.log("drawer")}
+        onPress={() =>
+          ((navigation as unknown) as NavigationDrawerProp<
+            NavigationRoute<NavigationSetParamsActionPayload>,
+            NavigationParams
+          >).toggleDrawer()
+        }
       />
     </HeaderButtons>
   )
-};
+});
 
 export default FavoritesScreen;
 

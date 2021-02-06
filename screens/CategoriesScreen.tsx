@@ -16,6 +16,8 @@ import { NavigationStackScreenComponent } from "react-navigation-stack";
 import { Ionicons } from "@expo/vector-icons";
 import { CATEGORIES } from "../data/dummy-data";
 import Colors from "../constants/Colors";
+import { NavigationParams, NavigationRoute } from "react-navigation";
+import { NavigationDrawerProp } from "react-navigation-drawer";
 
 const CategoriesScreen: NavigationStackScreenComponent = ({ navigation }) => {
   return (
@@ -41,7 +43,7 @@ const CategoriesScreen: NavigationStackScreenComponent = ({ navigation }) => {
   );
 };
 
-CategoriesScreen.navigationOptions = {
+CategoriesScreen.navigationOptions = ({ navigation }) => ({
   headerTitle: "Meal Categories",
   headerLeft: () => (
     <HeaderButtons
@@ -57,11 +59,16 @@ CategoriesScreen.navigationOptions = {
       <Item
         title="Drawer"
         iconName="ios-menu"
-        onPress={() => console.log("drawer")}
+        onPress={() =>
+          ((navigation as unknown) as NavigationDrawerProp<
+            NavigationRoute<NavigationParams>,
+            NavigationParams
+          >).toggleDrawer()
+        }
       />
     </HeaderButtons>
   )
-};
+});
 
 export default CategoriesScreen;
 
