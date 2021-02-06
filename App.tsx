@@ -115,9 +115,26 @@ const filtersNavigator = createStackNavigator(
   defaultNavOpts
 );
 
-const drawerNavigator = createDrawerNavigator({
-  MealsTab: tabNavigator,
-  Filters: filtersNavigator
-});
+const drawerNavigator = createDrawerNavigator(
+  {
+    MealsTab: {
+      screen: tabNavigator,
+      navigationOptions: {
+        title: "Meals"
+      }
+    },
+    Filters: {
+      screen: filtersNavigator,
+      navigationOptions: {
+        title: "Filter Meals"
+      }
+    }
+  },
+  {
+    contentOptions: {
+      activeTintColor: Colors.accentColor
+    }
+  }
+);
 
 export default createAppContainer(drawerNavigator);
