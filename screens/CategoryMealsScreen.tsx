@@ -7,7 +7,6 @@ import {
   TouchableOpacity,
   View
 } from "react-native";
-import { Button } from "react-native-elements";
 import { NavigationStackScreenComponent } from "react-navigation-stack";
 import { CATEGORIES, MEALS } from "../data/dummy-data";
 
@@ -23,7 +22,11 @@ const CategoryMealsScreen: NavigationStackScreenComponent<{
       keyExtractor={m => m.id}
       renderItem={({ item }) => (
         <View style={styles.mealPrt}>
-          <TouchableOpacity>
+          <TouchableOpacity
+            onPress={() =>
+              navigation.navigate("MealDetails", { mealId: item.id })
+            }
+          >
             <View style={styles.mealItem}>
               <View style={{ ...styles.mealRow, ...styles.mealHeader }}>
                 <ImageBackground
