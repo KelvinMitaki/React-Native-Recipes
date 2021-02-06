@@ -28,13 +28,28 @@ LogBox.ignoreLogs([
   "It appears that you are using old version of react-navigation library. Please update @react-navigation/bottom-tabs, @react-navigation/stack and @react-navigation/drawer to version 5.10.0 or above to take full advantage of new functionality added to react-native-screens"
 ]);
 
-const stackNavigator = createStackNavigator(
+const mealsStackNavigator = createStackNavigator(
   {
     Categories: CategoriesScreen,
     CategoryMeals: CategoryMealsScreen,
-    Favorites: FavoritesScreen,
     Filters: FiltersScreen,
     MealDetails: MealDetailsScreen
+  },
+  {
+    defaultNavigationOptions: {
+      headerStyle: {
+        ...(Platform.OS === "android" && {
+          backgroundColor: Colors.primaryColor
+        })
+      },
+      headerTintColor: Platform.OS === "android" ? "white" : Colors.primaryColor
+    }
+  }
+);
+
+const favoritesStackNavigator = createStackNavigator(
+  {
+    Favorites: FavoritesScreen
   },
   {
     defaultNavigationOptions: {
@@ -54,7 +69,7 @@ const tabScreenConfig: NavigationRouteConfigMap<
   unknown
 > = {
   Meals: {
-    screen: stackNavigator,
+    screen: mealsStackNavigator,
     navigationOptions: {
       tabBarIcon: tabInfo => (
         <Ionicons name="ios-restaurant" size={25} color={tabInfo.tintColor} />
@@ -62,7 +77,7 @@ const tabScreenConfig: NavigationRouteConfigMap<
     }
   },
   Favorites: {
-    screen: FavoritesScreen,
+    screen: favoritesStackNavigator,
     navigationOptions: {
       tabBarIcon: tabInfo => (
         <Ionicons name="ios-star" size={25} color={tabInfo.tintColor} />
