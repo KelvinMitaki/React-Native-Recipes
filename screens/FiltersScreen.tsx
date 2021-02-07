@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Platform, StyleSheet, Text, View } from "react-native";
 import { NavigationParams, NavigationRoute } from "react-navigation";
 import { NavigationDrawerProp } from "react-navigation-drawer";
@@ -10,16 +10,13 @@ import {
 import { NavigationStackScreenComponent } from "react-navigation-stack";
 import { Ionicons } from "@expo/vector-icons";
 import Colors from "../constants/Colors";
-import { Switch } from "react-native-gesture-handler";
+import Filter from "../components/Filter";
 
 const FiltersScreen: NavigationStackScreenComponent = () => {
   return (
     <View style={styles.screen}>
       <Text style={styles.title}>Available Filters / Restrictions</Text>
-      <View style={styles.filterContainer}>
-        <Text>Glutten-free</Text>
-        <Switch />
-      </View>
+      <Filter title="Glutten-Free" />
     </View>
   );
 };
@@ -63,11 +60,5 @@ const styles = StyleSheet.create({
     fontSize: 22,
     textAlign: "center",
     margin: 20
-  },
-  filterContainer: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    width: "80%"
   }
 });
