@@ -23,16 +23,19 @@ const MealDetailsScreen: NavigationStackScreenComponent<{
   mealId?: string;
   mealTitle?: string;
   dispatch?: Dispatch<ToggleFavorite>;
-  favoriteMeals?: Meal[];
+  favoriteMeal?: boolean;
 }> = ({ navigation }) => {
   const dispatch = useDispatch();
   const mealId = navigation.getParam("mealId");
   const { meals, favoriteMeals } = useSelector((state: Redux) => state.meals);
   // console.log(favoriteMeals);
   useEffect(() => {
-    navigation.setParams({ dispatch, favoriteMeals });
+    navigation.setParams({ dispatch });
+  }, []);
+  useEffect(() => {
+    const favoriteMeal = favoriteMeals.some(m => m.id === mealId);
+    navigation.setParams({ favoriteMeal });
   }, [favoriteMeals]);
-
   const meal = meals.find(m => m.id === mealId);
   return (
     <>
@@ -80,11 +83,14 @@ MealDetailsScreen.navigationOptions = ({ navigation }) => {
       >
         <Item
           title="Favorite"
-          iconName="ios-star"
+          iconName={
+            navigation.getParam("favoriteMeal")
+              ? "ios-star"
+              : "ios-star-outline"
+          }
           onPress={() => {
             if (mealId && dispatch) {
               dispatch({ type: "toggleFavorite", payload: { mealId } });
-              console.log(navigation.getParam("favoriteMeals"));
             }
           }}
         />
