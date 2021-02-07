@@ -1,6 +1,7 @@
 import { AnyAction } from "redux";
 import { MEALS } from "../../data/dummy-data";
 import Meal from "../../models/Meal";
+import { AddFilter } from "../../screens/FiltersScreen";
 import { ToggleFavorite } from "../../screens/MealDetailsScreen";
 
 export interface MealsState {
@@ -9,7 +10,7 @@ export interface MealsState {
   favoriteMeals: Meal[];
 }
 
-type Action = ToggleFavorite;
+type Action = ToggleFavorite | AddFilter;
 
 const INITIAL_STATE: MealsState = {
   meals: MEALS,
@@ -36,6 +37,21 @@ const mealsReducer = (state = INITIAL_STATE, action: Action): MealsState => {
           ...state.favoriteMeals
         ]
       };
+    case "addFilter":
+      const {
+        isGluttenFree,
+        isLactoseFree,
+        isVegan,
+        isVegeterian
+      } = action.payload;
+      const filteredMeals = state.filteredMeals.filter(
+        m =>
+          m.isGlutenFree === isGluttenFree &&
+          m.isLactoseFree === isLactoseFree &&
+          m.isVegan === isVegan &&
+          m.isVegetarian === isVegeterian
+      );
+      return { ...state, filteredMeals };
     default:
       return state;
   }

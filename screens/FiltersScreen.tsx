@@ -11,27 +11,38 @@ import { NavigationStackScreenComponent } from "react-navigation-stack";
 import { Ionicons } from "@expo/vector-icons";
 import Colors from "../constants/Colors";
 import Filter from "../components/Filter";
+import { useDispatch } from "react-redux";
+
+export interface AddFilter {
+  type: "addFilter";
+  payload: {
+    isGluttenFree: boolean;
+    isLactoseFree: boolean;
+    isVegan: boolean;
+    isVegeterian: boolean;
+  };
+}
 
 const FiltersScreen: NavigationStackScreenComponent<{ save?: () => void }> = ({
   navigation
 }) => {
   const [isGluttenFree, setIsGluttenFree] = useState<boolean>(false);
   const [isLactoseFree, setIsLactoseFree] = useState<boolean>(false);
-  const [vegan, setVegan] = useState<boolean>(false);
-  const [vegeterian, setVegeterian] = useState<boolean>(false);
-
+  const [isVegan, setVegan] = useState<boolean>(false);
+  const [isVegeterian, setVegeterian] = useState<boolean>(false);
+  const dispatch = useDispatch();
   useEffect(() => {
     const saveFilters = () => {
       const appliedFilters = {
-        gluttenFree: isGluttenFree,
-        lactoseFree: isLactoseFree,
-        vegan,
-        vegeterian
+        isGluttenFree,
+        isLactoseFree,
+        isVegan,
+        isVegeterian
       };
-      console.log(appliedFilters);
+      dispatch<AddFilter>({ type: "addFilter", payload: appliedFilters });
     };
     navigation.setParams({ save: saveFilters });
-  }, [isGluttenFree, isLactoseFree, vegan, vegeterian]);
+  }, [isGluttenFree, isLactoseFree, isVegan, isVegeterian]);
   return (
     <View style={styles.screen}>
       <Text style={styles.title}>Available Filters / Restrictions</Text>
@@ -45,8 +56,12 @@ const FiltersScreen: NavigationStackScreenComponent<{ save?: () => void }> = ({
         value={isLactoseFree}
         title="Lactose-Free"
       />
-      <Filter onChange={setVegan} value={vegan} title="Vegan" />
-      <Filter onChange={setVegeterian} value={vegeterian} title="Vegeterian" />
+      <Filter onChange={setVegan} value={isVegan} title="Vegan" />
+      <Filter
+        onChange={setVegeterian}
+        value={isVegeterian}
+        title="Vegeterian"
+      />
     </View>
   );
 };
