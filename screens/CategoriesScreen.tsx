@@ -18,8 +18,12 @@ import { CATEGORIES } from "../data/dummy-data";
 import Colors from "../constants/Colors";
 import { NavigationParams, NavigationRoute } from "react-navigation";
 import { NavigationDrawerProp } from "react-navigation-drawer";
+import { useSelector } from "react-redux";
+import { Redux } from "../interfaces/Redux";
 
 const CategoriesScreen: NavigationStackScreenComponent = ({ navigation }) => {
+  const meals = useSelector((state: Redux) => state.meals);
+  console.log(meals);
   return (
     <View>
       <FlatList

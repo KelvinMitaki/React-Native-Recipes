@@ -29,6 +29,9 @@ import {
   StackNavigationOptions,
   StackNavigationProp
 } from "react-navigation-stack/lib/typescript/src/vendor/types";
+import { createStore } from "redux";
+import reducers from "./redux";
+import { Provider } from "react-redux";
 
 enableScreens();
 
@@ -37,6 +40,7 @@ LogBox.ignoreLogs([
   "Your project is accessing the following APIs from a deprecated global rather than a module import: Constants (expo-constants)."
 ]);
 
+const store = createStore(reducers);
 const defaultNavOpts: CreateNavigatorConfig<
   StackNavigationConfig,
   NavigationStackRouterConfig,
@@ -137,4 +141,10 @@ const drawerNavigator = createDrawerNavigator(
   }
 );
 
-export default createAppContainer(drawerNavigator);
+const App = createAppContainer(drawerNavigator);
+
+export default () => (
+  <Provider store={store}>
+    <App />
+  </Provider>
+);
