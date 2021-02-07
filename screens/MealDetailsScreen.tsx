@@ -14,15 +14,15 @@ import { Redux } from "../interfaces/Redux";
 import { Dispatch } from "redux";
 import Meal from "../models/Meal";
 
-export interface AddFavorite {
-  type: "addFavorite";
+export interface ToggleFavorite {
+  type: "toggleFavorite";
   payload: { mealId: string };
 }
 
 const MealDetailsScreen: NavigationStackScreenComponent<{
   mealId?: string;
   mealTitle?: string;
-  dispatch?: Dispatch<AddFavorite>;
+  dispatch?: Dispatch<ToggleFavorite>;
   favoriteMeals?: Meal[];
 }> = ({ navigation }) => {
   const dispatch = useDispatch();
@@ -83,7 +83,7 @@ MealDetailsScreen.navigationOptions = ({ navigation }) => {
           iconName="ios-star"
           onPress={() => {
             if (mealId && dispatch) {
-              dispatch({ type: "addFavorite", payload: { mealId } });
+              dispatch({ type: "toggleFavorite", payload: { mealId } });
               console.log(navigation.getParam("favoriteMeals"));
             }
           }}
