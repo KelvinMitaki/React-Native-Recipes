@@ -9,7 +9,6 @@ import {
 import { NavigationStackScreenComponent } from "react-navigation-stack";
 import MealList from "../components/MealList";
 import Colors from "../constants/Colors";
-import { MEALS } from "../data/dummy-data";
 import { NavigationDrawerProp } from "react-navigation-drawer";
 import {
   NavigationParams,

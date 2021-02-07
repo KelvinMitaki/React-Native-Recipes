@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Image, Platform, StyleSheet, Text, View } from "react-native";
 import {
   HeaderButton,
@@ -7,17 +7,32 @@ import {
 } from "react-navigation-header-buttons";
 import { NavigationStackScreenComponent } from "react-navigation-stack";
 import { Ionicons } from "@expo/vector-icons";
-import { MEALS } from "../data/dummy-data";
 import Colors from "../constants/Colors";
 import { ScrollView } from "react-native-gesture-handler";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Redux } from "../interfaces/Redux";
+import { Dispatch } from "redux";
+import Meal from "../models/Meal";
+
+export interface AddFavorite {
+  type: "addFavorite";
+  payload: { mealId: string };
+}
 
 const MealDetailsScreen: NavigationStackScreenComponent<{
   mealId?: string;
+  mealTitle?: string;
+  dispatch?: Dispatch<AddFavorite>;
+  favoriteMeals?: Meal[];
 }> = ({ navigation }) => {
+  const dispatch = useDispatch();
   const mealId = navigation.getParam("mealId");
-  const { meals } = useSelector((state: Redux) => state.meals);
+  const { meals, favoriteMeals } = useSelector((state: Redux) => state.meals);
+  // console.log(favoriteMeals);
+  useEffect(() => {
+    navigation.setParams({ dispatch, favoriteMeals });
+  }, [favoriteMeals]);
+
   const meal = meals.find(m => m.id === mealId);
   return (
     <>
@@ -47,27 +62,36 @@ const MealDetailsScreen: NavigationStackScreenComponent<{
   );
 };
 
-MealDetailsScreen.navigationOptions = ({ navigation }) => ({
-  headerTitle: MEALS.find(m => m.id === navigation.getParam("mealId"))?.title,
-  headerRight: () => (
-    <HeaderButtons
-      HeaderButtonComponent={props => (
-        <HeaderButton
-          {...props}
-          IconComponent={Ionicons}
-          iconSize={23}
-          color={Platform.OS === "ios" ? Colors.primaryColor : "white"}
+MealDetailsScreen.navigationOptions = ({ navigation }) => {
+  const dispatch = navigation.getParam("dispatch");
+  const mealId = navigation.getParam("mealId");
+  return {
+    headerTitle: navigation.getParam("mealTitle"),
+    headerRight: () => (
+      <HeaderButtons
+        HeaderButtonComponent={props => (
+          <HeaderButton
+            {...props}
+            IconComponent={Ionicons}
+            iconSize={23}
+            color={Platform.OS === "ios" ? Colors.primaryColor : "white"}
+          />
+        )}
+      >
+        <Item
+          title="Favorite"
+          iconName="ios-star"
+          onPress={() => {
+            if (mealId && dispatch) {
+              dispatch({ type: "addFavorite", payload: { mealId } });
+              console.log(navigation.getParam("favoriteMeals"));
+            }
+          }}
         />
-      )}
-    >
-      <Item
-        title="Favorite"
-        iconName="ios-star"
-        onPress={() => console.log("mark as favorite")}
-      />
-    </HeaderButtons>
-  )
-});
+      </HeaderButtons>
+    )
+  };
+};
 
 export default MealDetailsScreen;
 

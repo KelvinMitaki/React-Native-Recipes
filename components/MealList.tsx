@@ -31,7 +31,10 @@ const MealList: React.FC<Props & NavigationInjectedProps<NavigationParams>> = ({
         <View style={styles.mealPrt}>
           <TouchableOpacity
             onPress={() =>
-              navigation.navigate("MealDetails", { mealId: item.id })
+              navigation.navigate("MealDetails", {
+                mealId: item.id,
+                mealTitle: item.title
+              })
             }
           >
             <View style={styles.mealItem}>

@@ -10,11 +10,11 @@ const CategoryMealsScreen: NavigationStackScreenComponent<{
   id?: string;
 }> = ({ navigation }) => {
   const catId = navigation.getParam("id");
-  const { meals } = useSelector((state: Redux) => state.meals);
-  const filteredMeals = meals.filter(meal =>
+  const { filteredMeals } = useSelector((state: Redux) => state.meals);
+  const meals = filteredMeals.filter(meal =>
     meal.categoryIds.indexOf(catId as string)
   );
-  return <MealList data={filteredMeals} />;
+  return <MealList data={meals} />;
 };
 CategoryMealsScreen.navigationOptions = ({ navigation }) => ({
   headerTitle: CATEGORIES.find(cat => cat.id === navigation.getParam("id"))
