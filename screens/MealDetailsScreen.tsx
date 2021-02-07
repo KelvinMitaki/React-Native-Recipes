@@ -20,9 +20,11 @@ const MealDetailsScreen: NavigationStackScreenComponent<{
     <ScrollView>
       <Image source={{ uri: meal?.imageUrl }} style={styles.image} />
       <View style={{ ...styles.mealRow, ...styles.mealDetail }}>
-        <Text>{meal?.duration}m</Text>
-        <Text>{meal?.complexity.toUpperCase()}</Text>
-        <Text>{meal?.affordability.toUpperCase()}</Text>
+        <Text style={{ color: "white" }}>{meal?.duration}m</Text>
+        <Text style={{ color: "white" }}>{meal?.complexity.toUpperCase()}</Text>
+        <Text style={{ color: "white" }}>
+          {meal?.affordability.toUpperCase()}
+        </Text>
       </View>
       <Text style={styles.title}>Ingredients</Text>
       {meal?.ingredients.map(ing => (
@@ -73,7 +75,8 @@ const styles = StyleSheet.create({
   mealDetail: {
     flexDirection: "row",
     padding: 15,
-    justifyContent: "space-between"
+    justifyContent: "space-between",
+    backgroundColor: "rgba(0,0,0,0.5)"
   },
   title: {
     fontWeight: "bold",

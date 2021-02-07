@@ -10,11 +10,16 @@ import {
 import { NavigationStackScreenComponent } from "react-navigation-stack";
 import { Ionicons } from "@expo/vector-icons";
 import Colors from "../constants/Colors";
+import { Switch } from "react-native-gesture-handler";
 
 const FiltersScreen: NavigationStackScreenComponent = () => {
   return (
-    <View>
-      <Text>FiltersScreen FiltersScreen</Text>
+    <View style={styles.screen}>
+      <Text style={styles.title}>Available Filters / Restrictions</Text>
+      <View style={styles.filterContainer}>
+        <Text>Glutten-free</Text>
+        <Switch />
+      </View>
     </View>
   );
 };
@@ -48,4 +53,21 @@ FiltersScreen.navigationOptions = ({ navigation }) => ({
 
 export default FiltersScreen;
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  screen: {
+    flex: 1,
+    alignItems: "center"
+  },
+  title: {
+    fontWeight: "bold",
+    fontSize: 22,
+    textAlign: "center",
+    margin: 20
+  },
+  filterContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    width: "80%"
+  }
+});
