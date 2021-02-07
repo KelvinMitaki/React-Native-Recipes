@@ -16,15 +16,12 @@ import {
   NavigationRoute,
   NavigationSetParamsActionPayload
 } from "react-navigation";
+import { Redux } from "../interfaces/Redux";
+import { useSelector } from "react-redux";
 
 const FavoritesScreen: NavigationStackScreenComponent = () => {
-  return (
-    <MealList
-      data={MEALS.filter(
-        m => m.id === "m1" || m.id === "m2" || m.id === "m3" || m.id === "m4"
-      )}
-    />
-  );
+  const { favoriteMeals } = useSelector((state: Redux) => state.meals);
+  return <MealList data={favoriteMeals} />;
 };
 
 FavoritesScreen.navigationOptions = ({ navigation }) => ({

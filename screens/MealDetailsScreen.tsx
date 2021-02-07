@@ -10,14 +10,17 @@ import { Ionicons } from "@expo/vector-icons";
 import { MEALS } from "../data/dummy-data";
 import Colors from "../constants/Colors";
 import { ScrollView } from "react-native-gesture-handler";
+import { useSelector } from "react-redux";
+import { Redux } from "../interfaces/Redux";
 
 const MealDetailsScreen: NavigationStackScreenComponent<{
   mealId?: string;
 }> = ({ navigation }) => {
   const mealId = navigation.getParam("mealId");
-  const meal = MEALS.find(m => m.id === mealId);
+  const { meals } = useSelector((state: Redux) => state.meals);
+  const meal = meals.find(m => m.id === mealId);
   return (
-    <ScrollView>
+    <>
       <Image source={{ uri: meal?.imageUrl }} style={styles.image} />
       <View style={{ ...styles.mealRow, ...styles.mealDetail }}>
         <Text style={{ color: "white" }}>{meal?.duration}m</Text>
@@ -26,19 +29,21 @@ const MealDetailsScreen: NavigationStackScreenComponent<{
           {meal?.affordability.toUpperCase()}
         </Text>
       </View>
-      <Text style={styles.title}>Ingredients</Text>
-      {meal?.ingredients.map(ing => (
-        <Text style={styles.listItem} key={ing}>
-          {ing}
-        </Text>
-      ))}
-      <Text style={styles.title}>Steps</Text>
-      {meal?.steps.map(st => (
-        <Text style={styles.listItem} key={st}>
-          {st}
-        </Text>
-      ))}
-    </ScrollView>
+      <ScrollView>
+        <Text style={styles.title}>Ingredients</Text>
+        {meal?.ingredients.map(ing => (
+          <Text style={styles.listItem} key={ing}>
+            {ing}
+          </Text>
+        ))}
+        <Text style={styles.title}>Steps</Text>
+        {meal?.steps.map(st => (
+          <Text style={styles.listItem} key={st}>
+            {st}
+          </Text>
+        ))}
+      </ScrollView>
+    </>
   );
 };
 
