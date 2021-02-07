@@ -108,6 +108,7 @@ FiltersScreen.navigationOptions = ({ navigation }) => ({
         onPress={() => {
           const save = navigation.getParam("save");
           save && save();
+          navigation.navigate("Categories");
         }}
       />
     </HeaderButtons>
