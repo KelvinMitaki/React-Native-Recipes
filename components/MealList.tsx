@@ -12,6 +12,8 @@ import {
   NavigationParams,
   withNavigation
 } from "react-navigation";
+import { useSelector } from "react-redux";
+import { Redux } from "../interfaces/Redux";
 import Meal from "../models/Meal";
 
 interface Props {
@@ -22,6 +24,8 @@ const MealList: React.FC<Props & NavigationInjectedProps<NavigationParams>> = ({
   data,
   navigation
 }) => {
+  const { favoriteMeals } = useSelector((state: Redux) => state.meals);
+
   return (
     <FlatList
       showsHorizontalScrollIndicator={false}
@@ -33,7 +37,8 @@ const MealList: React.FC<Props & NavigationInjectedProps<NavigationParams>> = ({
             onPress={() =>
               navigation.navigate("MealDetails", {
                 mealId: item.id,
-                mealTitle: item.title
+                mealTitle: item.title,
+                favoriteMeal: favoriteMeals.some(m => m.id === item.id)
               })
             }
           >

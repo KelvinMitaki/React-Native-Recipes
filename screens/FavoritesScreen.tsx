@@ -1,5 +1,5 @@
 import React from "react";
-import { Platform, StyleSheet } from "react-native";
+import { Platform, StyleSheet, View } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import {
   HeaderButton,
@@ -17,9 +17,19 @@ import {
 } from "react-navigation";
 import { Redux } from "../interfaces/Redux";
 import { useSelector } from "react-redux";
+import { Text } from "react-native-elements";
 
 const FavoritesScreen: NavigationStackScreenComponent = () => {
   const { favoriteMeals } = useSelector((state: Redux) => state.meals);
+  if (favoriteMeals.length === 0) {
+    return (
+      <View style={styles.screen}>
+        <Text h3 h3Style={{ textAlign: "center" }}>
+          No favorite meals found. Start adding some
+        </Text>
+      </View>
+    );
+  }
   return <MealList data={favoriteMeals} />;
 };
 
@@ -52,4 +62,10 @@ FavoritesScreen.navigationOptions = ({ navigation }) => ({
 
 export default FavoritesScreen;
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  screen: {
+    flex: 1,
+    flexDirection: "row",
+    alignItems: "center"
+  }
+});
