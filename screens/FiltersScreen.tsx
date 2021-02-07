@@ -17,6 +17,9 @@ const FiltersScreen: NavigationStackScreenComponent = () => {
     <View style={styles.screen}>
       <Text style={styles.title}>Available Filters / Restrictions</Text>
       <Filter title="Glutten-Free" />
+      <Filter title="Lactose-Free" />
+      <Filter title="Vegan" />
+      <Filter title="Vegeterian" />
     </View>
   );
 };
