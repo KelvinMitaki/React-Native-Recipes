@@ -1,5 +1,5 @@
 import React from "react";
-import { Platform, StyleSheet, Text, View } from "react-native";
+import { Image, Platform, StyleSheet, Text, View } from "react-native";
 import {
   HeaderButton,
   HeaderButtons,
@@ -9,6 +9,7 @@ import { NavigationStackScreenComponent } from "react-navigation-stack";
 import { Ionicons } from "@expo/vector-icons";
 import { MEALS } from "../data/dummy-data";
 import Colors from "../constants/Colors";
+import { ScrollView } from "react-native-gesture-handler";
 
 const MealDetailsScreen: NavigationStackScreenComponent<{
   mealId?: string;
@@ -16,9 +17,26 @@ const MealDetailsScreen: NavigationStackScreenComponent<{
   const mealId = navigation.getParam("mealId");
   const meal = MEALS.find(m => m.id === mealId);
   return (
-    <View>
-      <Text>{meal?.title}</Text>
-    </View>
+    <ScrollView>
+      <Image source={{ uri: meal?.imageUrl }} style={styles.image} />
+      <View style={{ ...styles.mealRow, ...styles.mealDetail }}>
+        <Text>{meal?.duration}m</Text>
+        <Text>{meal?.complexity.toUpperCase()}</Text>
+        <Text>{meal?.affordability.toUpperCase()}</Text>
+      </View>
+      <Text style={styles.title}>Ingredients</Text>
+      {meal?.ingredients.map(ing => (
+        <Text style={styles.listItem} key={ing}>
+          {ing}
+        </Text>
+      ))}
+      <Text style={styles.title}>Steps</Text>
+      {meal?.steps.map(st => (
+        <Text style={styles.listItem} key={st}>
+          {st}
+        </Text>
+      ))}
+    </ScrollView>
   );
 };
 
@@ -46,4 +64,28 @@ MealDetailsScreen.navigationOptions = ({ navigation }) => ({
 
 export default MealDetailsScreen;
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  image: {
+    height: 200,
+    width: "100%"
+  },
+  mealRow: {},
+  mealDetail: {
+    flexDirection: "row",
+    padding: 15,
+    justifyContent: "space-between"
+  },
+  title: {
+    fontWeight: "bold",
+    fontSize: 22,
+    textAlign: "center",
+    marginVertical: 10
+  },
+  listItem: {
+    marginVertical: 10,
+    marginHorizontal: 20,
+    borderColor: "#ccc",
+    borderWidth: 1,
+    padding: 10
+  }
+});
