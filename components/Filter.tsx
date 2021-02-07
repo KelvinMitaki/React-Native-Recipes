@@ -4,16 +4,17 @@ import Colors from "../constants/Colors";
 
 interface Props {
   title: string;
+  onChange: React.Dispatch<React.SetStateAction<boolean>>;
+  value: boolean;
 }
 
-const Filter: React.FC<Props> = ({ title }) => {
-  const [toggle, setToggle] = useState<boolean>(false);
+const Filter: React.FC<Props> = ({ title, onChange, value }) => {
   return (
     <View style={styles.filterContainer}>
       <Text>{title}</Text>
       <Switch
-        value={toggle}
-        onValueChange={() => setToggle(val => !val)}
+        value={value}
+        onValueChange={() => onChange(val => !val)}
         trackColor={{
           true: Colors.primaryColor,
           false: Platform.OS === "android" ? "#ccc" : "white"

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Platform, StyleSheet, Text, View } from "react-native";
 import { NavigationParams, NavigationRoute } from "react-navigation";
 import { NavigationDrawerProp } from "react-navigation-drawer";
@@ -12,14 +12,41 @@ import { Ionicons } from "@expo/vector-icons";
 import Colors from "../constants/Colors";
 import Filter from "../components/Filter";
 
-const FiltersScreen: NavigationStackScreenComponent = () => {
+const FiltersScreen: NavigationStackScreenComponent<{ save?: () => void }> = ({
+  navigation
+}) => {
+  const [isGluttenFree, setIsGluttenFree] = useState<boolean>(false);
+  const [isLactoseFree, setIsLactoseFree] = useState<boolean>(false);
+  const [vegan, setVegan] = useState<boolean>(false);
+  const [vegeterian, setVegeterian] = useState<boolean>(false);
+
+  useEffect(() => {
+    const saveFilters = () => {
+      const appliedFilters = {
+        gluttenFree: isGluttenFree,
+        lactoseFree: isLactoseFree,
+        vegan,
+        vegeterian
+      };
+      console.log(appliedFilters);
+    };
+    navigation.setParams({ save: saveFilters });
+  }, [isGluttenFree, isLactoseFree, vegan, vegeterian]);
   return (
     <View style={styles.screen}>
       <Text style={styles.title}>Available Filters / Restrictions</Text>
-      <Filter title="Glutten-Free" />
-      <Filter title="Lactose-Free" />
-      <Filter title="Vegan" />
-      <Filter title="Vegeterian" />
+      <Filter
+        onChange={setIsGluttenFree}
+        value={isGluttenFree}
+        title="Glutten-Free"
+      />
+      <Filter
+        onChange={setIsLactoseFree}
+        value={isLactoseFree}
+        title="Lactose-Free"
+      />
+      <Filter onChange={setVegan} value={vegan} title="Vegan" />
+      <Filter onChange={setVegeterian} value={vegeterian} title="Vegeterian" />
     </View>
   );
 };
@@ -46,6 +73,27 @@ FiltersScreen.navigationOptions = ({ navigation }) => ({
             NavigationParams
           >).toggleDrawer()
         }
+      />
+    </HeaderButtons>
+  ),
+  headerRight: () => (
+    <HeaderButtons
+      HeaderButtonComponent={props => (
+        <HeaderButton
+          {...props}
+          IconComponent={Ionicons}
+          iconSize={23}
+          color={Platform.OS === "android" ? "white" : Colors.primaryColor}
+        />
+      )}
+    >
+      <Item
+        title="Save"
+        iconName="ios-save"
+        onPress={() => {
+          const save = navigation.getParam("save");
+          save && save();
+        }}
       />
     </HeaderButtons>
   )
