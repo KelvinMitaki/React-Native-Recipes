@@ -44,7 +44,7 @@ const mealsReducer = (state = INITIAL_STATE, action: Action): MealsState => {
         isVegan,
         isVegeterian
       } = action.payload;
-      const filteredMeals = state.filteredMeals.filter(
+      const filteredMeals = state.meals.filter(
         m =>
           m.isGlutenFree === isGluttenFree &&
           m.isLactoseFree === isLactoseFree &&

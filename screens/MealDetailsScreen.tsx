@@ -28,7 +28,6 @@ const MealDetailsScreen: NavigationStackScreenComponent<{
   const dispatch = useDispatch();
   const mealId = navigation.getParam("mealId");
   const { meals, favoriteMeals } = useSelector((state: Redux) => state.meals);
-  // console.log(favoriteMeals);
   useEffect(() => {
     navigation.setParams({ dispatch });
   }, []);
