@@ -14,7 +14,7 @@ const CategoryMealsScreen: NavigationStackScreenComponent<{
   const catId = navigation.getParam("id");
   const { filteredMeals } = useSelector((state: Redux) => state.meals);
   const meals = filteredMeals.filter(meal =>
-    meal.categoryIds.indexOf(catId as string)
+    meal.categoryIds.includes(catId as string)
   );
   if (meals.length === 0) {
     return (
